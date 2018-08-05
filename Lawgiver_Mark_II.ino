@@ -39,11 +39,13 @@ LED barrelLEDs[] = {
   BARREL_LED_4_PIN
 };
 
-Button trigger = Button(TRIGGER_PIN);
-LED slide = LED(SLIDE_PIN);
-LED speaker = LED(SPEAKER_PIN);
-LED targetingSensor = LED(TARGETING_SENSOR_PIN);
-VoiceController voiceController = VoiceController(VOICE_RX_PIN, VOICE_TX_PIN);
+Button trigger(TRIGGER_PIN);
+LED slide(SLIDE_PIN);
+LED speaker(SPEAKER_PIN);
+LED targetingSensor(TARGETING_SENSOR_PIN);
+VoiceController voiceController(VOICE_RX_PIN, VOICE_TX_PIN);
+
+// ------------------------------------------------------
 
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
