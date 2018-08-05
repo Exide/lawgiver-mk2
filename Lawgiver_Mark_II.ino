@@ -80,50 +80,10 @@ void setup() {
 
 void initializeVR() {
   voiceRecognition.begin(VOICE_BAUD_RATE);
-
-  if (voiceRecognition.checkVersion(voiceBuffer) > 0){
-    int vrSoftwareVersionMajor = voiceBuffer[0];
-    int vrSoftwareVersionMinor = voiceBuffer[1];
-    int vrSoftwareVersionPatch = voiceBuffer[2];
-    String vrSoftwareVersion = String(vrSoftwareVersionMajor, DEC) + "." + String(vrSoftwareVersionMinor, DEC) + "." + String(vrSoftwareVersionPatch, DEC);
-    int vrHardwareVersionMajor = voiceBuffer[3];
-    int vrHardwareVersionMinor = voiceBuffer[4];
-    String vrHardwareVersion = String(vrHardwareVersionMajor, DEC) + "." + String(vrHardwareVersionMinor, DEC);
-
-    Serial.println("SimpleVR detected");
-    Serial.println("software version: " + vrSoftwareVersion);
-    Serial.println("hardware version: " + vrHardwareVersion);
-  } else {
-    Serial.println("error checking voice recognition software and hardware versions");
-  }
-
-  Serial.print(String("setting voice command group to ") + VOICE_COMMAND_GROUP + String(": "));
-  if (voiceRecognition.setGroup(VOICE_COMMAND_GROUP) >= 0){
-    Serial.println("succeeded");
-  } else {
-    Serial.println("failed");
-  }
-
-  Serial.print(String("enabling voice command group: "));
-  if (voiceRecognition.setEnable(true) >= 0){
-    Serial.println("succeeded");
-  } else {
-    Serial.println("failed");
-  }
-
-  Serial.println("checking SimpleVR settings...");
-  if (voiceRecognition.checkSystemSettings(voiceBuffer) >= 0){
-    boolean vrIsEnabled = voiceBuffer[0];
-    int vrGroup = voiceBuffer[1];
-    boolean vrHasThreshold = voiceBuffer[2] != 0xFF;
-    int vrThreshold = vrHasThreshold ? voiceBuffer[2] : 0;
-
-    Serial.println(String("is enabled? ") + String(vrIsEnabled ? "true" : "false"));
-    Serial.println(String("group selected: ") + vrGroup);
-    Serial.println(String("threshold value: ") + String(vrHasThreshold ? String(vrThreshold) : "none"));
-  } else {
-    Serial.println("error checking voice recognition system settings");
-  }
+  vrLogVersion();
+  vrSetCommandGroup(VOICE_COMMAND_GROUP);
+  vrEnableCommandGroup();
+  vrLogSettings();
 }
 
 void loop() {
@@ -194,6 +154,53 @@ void loop() {
       default:
         Serial.println("unknown command");
     }
+  }
+}
+
+void vrLogVersion() {
+  Serial.print("checking SimpleVR version: ");
+  if (voiceRecognition.checkVersion(voiceBuffer) > 0){
+    Serial.println("succeeded");
+    
+    int vrSoftwareVersionMajor = voiceBuffer[0];
+    int vrSoftwareVersionMinor = voiceBuffer[1];
+    int vrSoftwareVersionPatch = voiceBuffer[2];
+    String vrSoftwareVersion = String(vrSoftwareVersionMajor, DEC) + "." + String(vrSoftwareVersionMinor, DEC) + "." + String(vrSoftwareVersionPatch, DEC);
+    Serial.println("- software v" + vrSoftwareVersion);
+
+    int vrHardwareVersionMajor = voiceBuffer[3];
+    int vrHardwareVersionMinor = voiceBuffer[4];
+    String vrHardwareVersion = String(vrHardwareVersionMajor, DEC) + "." + String(vrHardwareVersionMinor, DEC);
+    Serial.println("- hardware v" + vrHardwareVersion);
+  } else {
+    Serial.println("failed");
+  }
+}
+
+void vrSetCommandGroup(int id) {
+  Serial.print(String("setting voice command group to ") + id + String(": "));
+  auto result = voiceRecognition.setGroup(id);
+  Serial.println(String(result >= 0 ? "succeeded" : "failed"));
+}
+
+void vrEnableCommandGroup() {
+  Serial.print(String("enabling voice command group: "));
+  auto result = voiceRecognition.setEnable(true);
+  Serial.println(String(result >= 0 ? "succeeded" : "failed"));
+}
+
+void vrLogSettings() {
+  Serial.print("checking SimpleVR settings: ");
+  if (voiceRecognition.checkSystemSettings(voiceBuffer) >= 0){
+    Serial.println("succeeded");
+    
+    Serial.println(String("- is enabled? ") + String(voiceBuffer[0] ? "true" : "false"));
+    Serial.println(String("- group selected: ") + voiceBuffer[1]);
+
+    boolean vrHasThreshold = voiceBuffer[2] != 0xFF;
+    Serial.println(String("- threshold value: ") + String(vrHasThreshold ? String(voiceBuffer[2]) : "none"));
+  } else {
+    Serial.println("failed");
   }
 }
 
