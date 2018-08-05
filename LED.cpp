@@ -4,18 +4,12 @@ class LED {
 
   private:
     int pin;
-    bool state;
 
   public:
     LED(int pin) {
       this->pin = pin;
-      this->state = false;
     }
 
-    ~LED() {
-      this->state = false;
-    }
-      
     void initialize() {
       Serial.println("initializing LED on pin " + this->pin);
       pinMode(this->pin, OUTPUT);
@@ -24,6 +18,7 @@ class LED {
     void turnOn() {
       Serial.println("turning on LED at pin " + this->pin);
       digitalWrite(this->pin, HIGH);
+      this->state
     }
   
     void turnOff() {
@@ -32,7 +27,8 @@ class LED {
     }
 
     bool isOn() {
-      return this->state;
+      int state = digitalRead(this->pin);
+      return state == HIGH;
     }
 
     bool isOff() {
