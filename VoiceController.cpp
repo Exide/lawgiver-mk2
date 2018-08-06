@@ -75,9 +75,9 @@ class VoiceController {
       logSettings();
     }
 
-    int checkForCommand() {
-      int command = 0;
-      auto result = vr.recognize(buffer, 50);
+    uint16_t checkForCommand() {
+      uint16_t command = 0;
+      int result = vr.recognize(buffer, 50);
       if (result > 0) {
         command += buffer[0];
         command <<=8;

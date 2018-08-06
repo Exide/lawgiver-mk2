@@ -74,13 +74,14 @@ void loop() {
     }
   }
 
-  int command = voiceController.checkForCommand();
+  uint16_t command = voiceController.checkForCommand();
   if (command != 0) {
     parseCommand(command);
   }
 }
 
-void parseCommand(int command) {
+void parseCommand(uint16_t command) {
+  Serial.println(String("parsing voice command: ") + command);
   switch (command) {
 
     case VOICE_COMMAND_DEBUG:
