@@ -15,9 +15,9 @@ const int DNA_SUCCESS_LED_PIN = 4;
 const int DNA_FAILURE_LED_PIN = 2;
 
 const int TRIGGER_PIN = 15;
-const int SLIDE_PIN = 6;
-const int SPEAKER_PIN = 7;
-const int TARGETING_SENSOR_PIN = 9;
+const int SLIDE_PIN = 6;            // yellow
+const int SPEAKER_PIN = 7;          // green
+const int TARGETING_SENSOR_PIN = 9; // white
 
 const int VOICE_RX_PIN = 2;
 const int VOICE_TX_PIN = 3;
