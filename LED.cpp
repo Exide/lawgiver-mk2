@@ -18,7 +18,6 @@ class LED {
     void turnOn() {
       Serial.println("turning on LED at pin " + this->pin);
       digitalWrite(this->pin, HIGH);
-      this->state
     }
   
     void turnOff() {
