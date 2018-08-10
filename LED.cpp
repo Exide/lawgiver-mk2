@@ -11,17 +11,17 @@ class LED {
     }
 
     void initialize() {
-      Serial.println("initializing LED on pin " + this->pin);
+      Serial.println(String("initializing LED on pin ") + this->pin);
       pinMode(this->pin, OUTPUT);
     }
   
     void turnOn() {
-      Serial.println("turning on LED at pin " + this->pin);
+      Serial.println(String("turning on LED at pin ") + this->pin);
       digitalWrite(this->pin, HIGH);
     }
   
     void turnOff() {
-      Serial.println("turning off LED at pin " + this->pin);
+      Serial.println(String("turning off LED at pin ") + this->pin);
       digitalWrite(this->pin, LOW);
     }
 
